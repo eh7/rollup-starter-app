@@ -44,7 +44,7 @@ const App = async () => {
     },
     peerDiscovery: [
       bootstrap({
-        list: ['/ip4/127.0.0.1/tcp/9001/ws/p2p/12D3KooWJynQCnGnjPq1EqeysY4rNm2pwwEApvwxwmFdZWs2DQLD'],
+        list: ['/ip4/127.0.0.1/tcp/9001/ws/p2p/12D3KooWATM3WBM9SaBmf88B57Msggrui7tarypMmcca72cUD4ed'],
       }),
       pubsubPeerDiscovery({
         interval: 10_000,

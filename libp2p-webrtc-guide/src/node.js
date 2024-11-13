@@ -16,8 +16,17 @@ import { update, getPeerTypes, getAddresses, getPeerDetails } from './utils.js'
 import { bootstrap } from '@libp2p/bootstrap'
 import * as filters from '@libp2p/websockets/filters'
 
+import { createFromProtobuf } from '@libp2p/peer-id-factory'
+import { peerIds } from './peers.js'
+
 const App = async () => {
+
+  const peerId = await createFromProtobuf(
+    Buffer.from(peerIds[1], 'hex')
+  )
+
   const libp2p = await createLibp2p({
+    peerId,
     addresses: {
       listen: [
         // 👇 Listen for webRTC connection
@@ -44,7 +53,7 @@ const App = async () => {
     },
     peerDiscovery: [
       bootstrap({
-        list: ['/ip4/127.0.0.1/tcp/9001/ws/p2p/12D3KooWJynQCnGnjPq1EqeysY4rNm2pwwEApvwxwmFdZWs2DQLD'],
+        list: ['/ip4/127.0.0.1/tcp/9001/ws/p2p/12D3KooWATM3WBM9SaBmf88B57Msggrui7tarypMmcca72cUD4ed'],
       }),
       pubsubPeerDiscovery({
         interval: 10_000,

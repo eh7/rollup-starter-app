@@ -19,9 +19,18 @@ import { bootstrap } from '@libp2p/bootstrap'
 import { circuitRelayServer } from '@libp2p/circuit-relay-v2'
 import { PUBSUB_PEER_DISCOVERY } from './constants.js'
 
+import { createFromProtobuf } from '@libp2p/peer-id-factory'
+import { peerIds } from './peers.js'
+
 async function main() {
   // enable('*')
+
+  const peerId = await createFromProtobuf(
+    Buffer.from(peerIds[0], 'hex')
+  )
+
   const libp2p = await createLibp2p({
+    peerId,
     addresses: {
       listen: [
 //        '/ip4/0.0.0.0/tcp/9003/ws',
