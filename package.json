@@ -1,12 +1,23 @@
 {
   "name": "rollup-starter-app",
+  "type": "module",
   "devDependencies": {
     "@rollup/plugin-commonjs": "^17.0.0",
     "@rollup/plugin-node-resolve": "^11.1.0",
     "npm-run-all": "^4.1.5",
     "rollup": "^2.36.2",
     "rollup-plugin-terser": "^7.0.2",
-    "serve": "^11.3.2"
+    "serve": "^14.2.4",
+    "@chainsafe/libp2p-gossipsub": "^14.0.0",
+    "@chainsafe/libp2p-noise": "^16.0.0",
+    "@chainsafe/libp2p-yamux": "^7.0.0",
+    "@libp2p/circuit-relay-v2": "^3.0.0",
+    "@libp2p/dcutr": "^2.0.0",
+    "@libp2p/identify": "^3.0.0",
+    "@libp2p/webrtc": "^5.0.0",
+    "@libp2p/websockets": "^9.0.0",
+    "@multiformats/multiaddr": "^12.3.1",
+    "libp2p": "^2.1.10"
   },
   "dependencies": {
     "date-fns": "^2.16.1"
