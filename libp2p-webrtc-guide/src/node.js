@@ -16,6 +16,9 @@ import { update, getPeerTypes, getAddresses, getPeerDetails } from './utils.js'
 import { bootstrap } from '@libp2p/bootstrap'
 import * as filters from '@libp2p/websockets/filters'
 
+import { fromString as uint8ArrayFromString } from "uint8arrays/from-string"
+import { toString as uint8ArrayToString } from "uint8arrays/to-string"
+
 import { createFromProtobuf } from '@libp2p/peer-id-factory'
 import { peerIds } from './peers.js'
 
@@ -69,11 +72,41 @@ const App = async () => {
   globalThis.libp2p = libp2p
 
   libp2p.addEventListener('peer:connect', (event) => {
-     console.log('connect:', event)
+    const remotePeer = event.detail
+    console.log('connect:', remotePeer.toString())
   })
 
   libp2p.addEventListener('peer:disconnect', (event) => {
-     console.log('disconnect:', event)
+    const remotePeer = event.detail
+    //console.log('disconnect:', event)
+    console.log('disconnect:', remotePeer.toString())
+  })
+
+  libp2p.addEventListener('peer:discovery', (event) => {
+    const remotePeer = event.detail.id
+    console.log('Discovered:', remotePeer.toString())
+    //console.log('Discovered:', evt.detail.id.toString())
+  })
+
+  const topic = "welcome_0.0.1"
+
+  libp2p.services.pubsub.addEventListener("message", (evt) => {
+    if (evt.detail.topic != 'browser-peer-discovery') {
+      console.log(
+        "*********** received: ",
+        evt.detail,
+        evt.detail.data,
+        evt.detail.topic,
+      )
+    }
+    //console.log(`received: ${uint8ArrayToString(evt.detail.data)} on topic ${evt.detail.topic}`)
+  })
+  await libp2p.services.pubsub.subscribe(topic)
+
+  libp2p.addEventListener('self:peer:update', () => {
+    //console.log('xxxxx', libp2p.getMultiaddrs())
+    const multiaddrs = libp2p.getMultiaddrs()
+    console.log("listeningAddressesList: ", multiaddrs)
   })
 
   setInterval(() => {

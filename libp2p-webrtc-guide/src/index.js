@@ -16,6 +16,9 @@ import { update, getPeerTypes, getAddresses, getPeerDetails } from './utils'
 import { bootstrap } from '@libp2p/bootstrap'
 import * as filters from '@libp2p/websockets/filters'
 
+import { fromString as uint8ArrayFromString } from "uint8arrays/from-string"
+import { toString as uint8ArrayToString } from "uint8arrays/to-string"
+
 const App = async () => {
   const libp2p = await createLibp2p({
     addresses: {
@@ -78,7 +81,21 @@ const App = async () => {
   update(DOM.nodePeerId(), libp2p.peerId.toString())
   update(DOM.nodeStatus(), 'Online')
 
-  libp2p.addEventListener('peer:connect', (event) => {})
+
+  const topic = "welcome_0.0.1"
+
+  libp2p.services.pubsub.addEventListener("message", (evt) => {
+    console.log(`node1 received: ${uint8ArrayToString(evt.detail.data)} on topic ${evt.detail.topic}`)
+  })
+  await libp2p.services.pubsub.subscribe(topic)
+
+  libp2p.addEventListener('peer:connect', (event) => {
+    libp2p.services.pubsub.publish(topic, uint8ArrayFromString('hi from ' + libp2p.peerId.toString()))
+      .catch(err => {
+        console.error(err)
+      })
+  })
+
   libp2p.addEventListener('peer:disconnect', (event) => {})
 
   setInterval(() => {
